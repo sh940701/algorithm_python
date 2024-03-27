@@ -14,23 +14,23 @@ start, end = list(map(int, input().split()))
 
 
 def dijkstra(start):
-    distance = [float('inf')] * (N + 1)
-    distance[start] = 0
+    cost_map = [float('inf')] * (N + 1)
+    cost_map[start] = 0
     queue = []
     heapq.heappush(queue, (0, start))
 
     while queue:
-        cost, now = heapq.heappop(queue)
-        if distance[now] < cost:
+        current_cost, current_point = heapq.heappop(queue)
+        if cost_map[current_point] < current_cost:
             continue
 
-        for i in graph[now]:
-            next_cost = cost + i[1]
-            if next_cost < distance[i[0]]:
-                distance[i[0]] = next_cost
-                heapq.heappush(queue, (next_cost, i[0]))
+        for next_target, next_cost_from_now in graph[current_point]:
+            next_cost_from_root = current_cost + next_cost_from_now
+            if next_cost_from_root < cost_map[next_target]:
+                cost_map[next_target] = next_cost_from_root
+                heapq.heappush(queue, (next_cost_from_root, next_target))
 
-    return distance[end]
+    return cost_map[end]
 
 
 print(dijkstra(start))
