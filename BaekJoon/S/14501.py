@@ -1,6 +1,7 @@
 N = int(input())
 arr = [list(map(int, input().split())) for _ in range(N)]
 
+
 # result = float('-inf')
 #
 #
@@ -28,9 +29,9 @@ arr = [list(map(int, input().split())) for _ in range(N)]
 
 # DP memoization 활용
 
-dp = [0] * N
-
-
+# dp = [0] * N
+#
+#
 def recur(idx):
     if idx == N:
         return 0
@@ -47,5 +48,11 @@ def recur(idx):
 
 
 recur(0)
+#
+# print(max(dp))
 
-print(max(dp))
+
+dp = [0] * N
+
+for idx in range(N)[::-1]:
+    dp[idx] = max(dp[idx + arr[idx][0]] + arr[idx][1], dp[idx + 1])
