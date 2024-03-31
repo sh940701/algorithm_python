@@ -5,59 +5,46 @@ N = int(input())
 cost_map = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
 
 
-def permutation(arr, n):
-    result = []
-    if n > len(arr):
-        return result
+def recur(arr, n):
+    global min_value
 
-    elif n == 1:
-        for i in arr:
-            result.append([i])
+    if n == N:
+        arr.append(arr[0])
+        calc = 0
+        for i in range(1, N + 1):
+            if cost_map[arr[i - 1]][arr[i]] == 0:
+                return
 
-    elif n > 1:
-        for i in range(len(arr)):
-            ans = [i for i in arr]
-            ans.remove(arr[i])
-            for p in permutation(ans, n - 1):
-                result.append([arr[i]] + p)
+            calc += cost_map[arr[i - 1]][arr[i]]
+        arr.pop()
+        min_value = min(min_value, calc)
+        return
 
-    return result
+    for i in range(N):
+        if i in arr:
+            continue
+        arr.append(i)
+        recur(arr, n + 1)
+        arr.pop()
 
+
+min_value = float('inf')
 
 arr = []
+recur(arr, 0)
 
-for i in range(1, N):
-    arr.append(i)
+print(min_value)
 
-calculated = permutation(arr, N - 1)
 
-# print(calculated)
-
-max_value = float('inf')
-
-for case in calculated:
-    case = [0] + case + [0]
-    calc = 0
-    for i in range(1, N + 1):
-        if cost_map[case[i - 1]][case[i]] == 0:
-            break
-        calc += cost_map[case[i - 1]][case[i]]
-    else:
-        max_value = min(calc, max_value)
-
-print(max_value)
-
+#
 # import sys
 #
 # N = int(input())
 #
 # cost_map = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
 #
-# memo = dict()
 #
-#
-# def calculate_cost(start, arr):
-#     global memo
+# def calculate_cost(start, arr, memo):
 #     temp_cost = float('inf')
 #
 #     state_key = (start, tuple(arr))
@@ -76,23 +63,27 @@ print(max_value)
 #         else:
 #             rest = arr.copy()
 #             rest.remove(elem)
-#             calculated = calculate_cost(elem, rest)
+#             calculated = calculate_cost(elem, rest, memo)
 #
-#             if calculated == float('inf'):
-#                 temp_cost = float('inf')
-#             else:
-#                 temp_cost = min(temp_cost, cost_map[start][elem] + calculated)
+#             temp_cost = min(temp_cost, cost_map[start][elem] + calculated)
 #
 #     memo[state_key] = temp_cost
 #     return temp_cost
 #
 #
-# tmp_arr = []
+# result_arr = []
 #
-# for i in range(1, N):
-#     tmp_arr.append(i)
+# for i in range(N):
+#     tmp_arr = []
 #
-# print(calculate_cost(0, tmp_arr))
+#     for j in range(N):
+#         tmp_arr.append(j)
+#
+#     memo = dict()
+#
+#     result_arr.append(calculate_cost(i, tmp_arr, memo))
+#
+# print(result_arr)
 
 # (0, [0, 1, 2, 3])
 # (1, [1, 2, 3])
