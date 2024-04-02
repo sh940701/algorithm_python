@@ -2,8 +2,9 @@ N, K = list(map(int, input().split()))
 objects = [list(map(int, input().split())) for _ in range(N)]
 
 
-#
+
 # result_value = float('-inf')
+#
 #
 # def recur(idx, weight, value):
 #     global result_value
@@ -41,8 +42,6 @@ def recur(idx, weight):
 
 
 print(recur(0, 0))
-
-
 
 # def recur(cur, w):
 #     if w > m:
